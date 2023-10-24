@@ -3,13 +3,13 @@
 using namespace std;
 
 struct TrieNode {
-  unordered_set<string> children;
+  unordered_set<TrieNode*> children;
   bool isWord = false;
 };
 
-class Trie {
+class CompressedTrie {
 public:
-  Trie() {
+  CompressedTrie() {
     root = new TrieNode();
   }
 
@@ -49,7 +49,7 @@ string findLongestCompoundWord(const string& filename) {
     return "";
   }
 
-  Trie trie;
+  CompressedTrie trie;
   string word;
   while (inputFile >> word) {
     trie.insert(word);
@@ -57,7 +57,7 @@ string findLongestCompoundWord(const string& filename) {
   inputFile.close();
 
   string longestCompoundWord = "";
-  for (string word : trie.children) {
+  for (string word : trie.root->children) {
     if (trie.isCompoundWord(word) && word.length() > longestCompoundWord.length()) {
       longestCompoundWord = word;
     }
